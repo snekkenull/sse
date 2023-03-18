@@ -2,7 +2,7 @@
     "name": "openai-streaming-api",
     "version": "1.0.0",
     "dependencies": {
-      "openai": "^4.0.0"
+      "openai": "^3.2.1"
     },
     "engines": {
       "node": "18.x"
