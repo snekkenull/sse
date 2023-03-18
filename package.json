@@ -10,7 +10,7 @@
       "node": "18.x"
     },
     "scripts": {
-      "start": "node /api/stream.js"
+      "start": "node stream.js"
     }
   }
   

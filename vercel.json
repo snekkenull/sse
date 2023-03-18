@@ -3,10 +3,10 @@
     "name": "openai-stream",
     "builds": [
       { "src": "index.html", "use": "@vercel/static" },
-      { "src": "api/stream.js", "use": "@vercel/node" }
+      { "src": "stream.js", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/api/stream", "dest": "/api/stream.js" },
+      { "src": "/stream", "dest": "/stream.js" },
       { "src": "/(.*)", "dest": "/index.html" }
     ]
   }
