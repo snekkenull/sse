@@ -1,6 +1,6 @@
 const openai = require('openai');
 
-openai.apiKey = 'YOUR_API_KEY'; // Replace with your OpenAI API key
+openai.apiKey = process.env.OPENAI_API_KEY; // Replace with your OpenAI API key
 
 module.exports = async (req, res) => {
   const { prompt } = req.query;
