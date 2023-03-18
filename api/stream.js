@@ -5,6 +5,13 @@ openai.apiKey = process.env.OPENAI_API_KEY; // Replace with your OpenAI API key
 module.exports = async (req, res) => {
   const { prompt } = req.query;
 
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  if (!prompt) {
+    res.status(400).send('Missing prompt parameter');
+    return;
+  }
+
   if (!prompt) {
     res.status(400).send('Missing prompt parameter');
     return;
