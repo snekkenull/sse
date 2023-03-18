@@ -1,16 +1,14 @@
 const openai = require('openai');
+const cors = require('cors');
+const express = require('express');
+const app = express();
+
+app.use(cors());
 
 openai.apiKey = process.env.OPENAI_API_KEY; // Replace with your OpenAI API key
 
-module.exports = async (req, res) => {
+app.get('/', async (req, res) => {
   const { prompt } = req.query;
-
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
-  if (!prompt) {
-    res.status(400).send('Missing prompt parameter');
-    return;
-  }
 
   if (!prompt) {
     res.status(400).send('Missing prompt parameter');
@@ -42,10 +40,6 @@ module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
 
     const reader = apiResponse.body.getReader();
 
@@ -64,4 +58,6 @@ module.exports = async (req, res) => {
     console.error('Error in streaming:', error);
     res.status(500).send('Error in streaming');
   }
-};
+});
+
+module.exports = app;
