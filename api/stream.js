@@ -49,7 +49,7 @@ app.get('/', async (req, res) => {
         return;
       }
 
-      res.write(`data: ${value}\n\n`);
+      res.write(JSON.stringify({ data: value }));
       reader.read().then(forwardChunk);
     };
 
