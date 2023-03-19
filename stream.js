@@ -1,13 +1,21 @@
 const openai = require('openai');
 const cors = require('cors');
 const express = require('express');
-const fetch = require('node-fetch'); // import node-fetch
+const fetch = require('node-fetch');
 
 const app = express();
 
-app.use(cors());
+// Set up CORS headers
+app.use(cors({
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 
-openai.apiKey = process.env.OPENAI_API_KEY; // Replace with your OpenAI API key
+openai.apiKey = process.env.OPENAI_API_KEY;
 
 app.get('/', async (req, res) => {
   const { prompt } = req.query;
@@ -18,7 +26,6 @@ app.get('/', async (req, res) => {
   }
 
   try {
-    // Set up the OpenAI API call with the streaming option
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -31,17 +38,16 @@ app.get('/', async (req, res) => {
         n: 1,
         stop: null,
         temperature: 1,
-        stream: true, // Enable streaming
+        stream: true,
       }),
     };
 
-    // Call the OpenAI API
     const apiResponse = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', requestOptions);
 
-    // Stream the API response to the client
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Set Access-Control-Allow-Origin header
 
     const reader = apiResponse.body.getReader();
 
@@ -51,7 +57,7 @@ app.get('/', async (req, res) => {
         return;
       }
 
-      res.write(`data: ${value}\n\n`); // Send the data as an event
+      res.write(`data: ${value}\n\n`);
       reader.read().then(forwardChunk);
     };
 
