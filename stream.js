@@ -1,19 +1,9 @@
 const openai = require('openai');
 const cors = require('cors');
 const express = require('express');
-const fetch = require('node-fetch');
 
 const app = express();
-
-// Set up CORS headers
-app.use(cors({
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(cors());
 
 openai.apiKey = process.env.OPENAI_API_KEY;
 
@@ -42,12 +32,14 @@ app.get('/', async (req, res) => {
       }),
     };
 
+    // Use dynamic import to load node-fetch
+    const { default: fetch } = await import('node-fetch');
+
     const apiResponse = await fetch('https://api.openai.com/v1/engines/davinci-codex/completions', requestOptions);
 
     res.setHeader('Content-Type', 'text/event-stream');
     res.setHeader('Cache-Control', 'no-cache');
     res.setHeader('Connection', 'keep-alive');
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Set Access-Control-Allow-Origin header
 
     const reader = apiResponse.body.getReader();
 
