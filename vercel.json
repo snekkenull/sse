@@ -6,7 +6,7 @@
       { "src": "stream.js", "use": "@vercel/node" }
     ],
     "routes": [
-      { "src": "/stream", "dest": "/stream.js" },
+      { "src": "/api", "dest": "/api/stream.js" },
       { "src": "/(.*)", "dest": "/index.html" }
     ]
   }
