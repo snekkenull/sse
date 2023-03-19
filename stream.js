@@ -1,6 +1,8 @@
 const openai = require('openai');
 const cors = require('cors');
 const express = require('express');
+const fetch = require('node-fetch'); // import node-fetch
+
 const app = express();
 
 app.use(cors());
